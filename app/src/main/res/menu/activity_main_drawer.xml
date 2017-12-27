@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/homeicon"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_playList"
+            android:icon="@android:drawable/stat_sys_headset"
+            android:title="PlayList" />
+
+        <item
+            android:id="@+id/onlinePlaylist"
+            android:title="Online Playlist"
+            android:icon="@android:drawable/stat_sys_headset"/>
+
+    </group>
+
+
+
+</menu>
