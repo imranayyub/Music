@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OnlinePLaylistFragment extends Fragment {
     ListView onlinePlayList;
-   static int i=0;
+    String name;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,9 +47,36 @@ public class OnlinePLaylistFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        onlinePlayList = (ListView) getActivity().findViewById(R.id.onlinePlaylist);
+        displayOnlinePlaylist();
 
-    onlinePlayList=(ListView)getActivity().findViewById(R.id.onlinePlaylist);
+    }
 
+    @Override
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.clear();
+        menu.setHeaderTitle(name);
+        menu.add(0, v.getId(), 0, "Remove from Playlist");//groupId, itemId, order, title
+        menu.add(0, v.getId(), 0, "Cancel");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(final MenuItem item) {
+        if (item.getTitle() == "Remove from Playlist") {
+
+            Toast.makeText(getActivity(), "Removing from Playlist..", Toast.LENGTH_LONG).show();
+            removeFromPlaylist();
+
+
+        } else if (item.getTitle() == "Cancel") {
+
+        }
+        return true;
+    }
+
+    void displayOnlinePlaylist() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -67,16 +97,17 @@ public class OnlinePLaylistFragment extends Fragment {
                     List<Songinfo> songinfo = response.body(); //storing response body in songinfo.
                     final ArrayList<String> songs = new ArrayList<>();
                     final ArrayList<String> songArt = new ArrayList<>();
-                for (Songinfo m : songinfo) {
-                    Log.d("SongName : ", m.getName());
-                    Log.d("Album: ", m.getAlbum());
-                    Log.d("Artist : ", m.getArtist());
-                    songs.add(i,m.getName());
-                    songArt.add(i,m.getAlbumArt());
-                     i++;
+                    int i = 0;
+                    for (Songinfo m : songinfo) {
+                        Log.d("SongName : ", m.getName());
+                        Log.d("Album: ", m.getAlbum());
+                        Log.d("Artist : ", m.getArtist());
+                        songs.add(i, m.getName());
+                        songArt.add(i, m.getAlbumArt());
+                        i++;
 
-                 }
-                    CustomAdapterforList adapter = new CustomAdapterforList(getActivity(),songArt , songs);
+                    }
+                    CustomAdapterforList adapter = new CustomAdapterforList(getActivity(), songArt, songs);
 
                     // Assign adapter to ListView
                     onlinePlayList.setAdapter(adapter);
@@ -87,7 +118,7 @@ public class OnlinePLaylistFragment extends Fragment {
                         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                            String name = (String) adapterView.getItemAtPosition(position);
+                            name = (String) adapterView.getItemAtPosition(position);
 //                            Toast.makeText(getActivity(), "Playing : " + name, Toast.LENGTH_SHORT).show();
 
                         }
@@ -97,7 +128,7 @@ public class OnlinePLaylistFragment extends Fragment {
                     onlinePlayList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                            String name = (String) adapterView.getItemAtPosition(position);
+                            name = (String) adapterView.getItemAtPosition(position);
                             return false;
                         }
                     });
@@ -110,30 +141,63 @@ public class OnlinePLaylistFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<Songinfo>> call, Throwable t) {
                     // Log error here since request failed
-                Log.e("OnlinePlaylistFragmet", t.toString());
+                    Log.e("OnlinePlaylistFragmet", t.toString());
 //                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Options: ");
-        menu.add(0, v.getId(), 0, "Remove from Playlist");//groupId, itemId, order, title
-        menu.add(0, v.getId(), 0, "Cancel");
-    }
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == "Remove from Playlist") {
-         Toast.makeText(getActivity(),"Removing from Playlist..",Toast.LENGTH_LONG).show();
-        }
-        else if (item.getTitle() == "Cancel") {
 
-        }
-        return  true;
     }
+
+    void removeFromPlaylist() {
+        //posting to the server.
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ApiInterface.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())     //Using GSON to Convert JSON into POJO.
+                .build();
+        //Passing Interface to create an implementation.
+        ApiInterface apiService = retrofit.create(ApiInterface.class);
+        try {
+            Songinfo songinfo = new Songinfo(name, "", "", "", "", "", "", "", "");
+            apiService.delete(songinfo).enqueue(new Callback<JsonObject>() {
+                //        apiService.savePost(userName, password, phone).enqueue(new Callback<playList>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.isSuccessful()) {
+//                            showResponse(
+                        Toast.makeText(getActivity(), response.body().toString(), Toast.LENGTH_SHORT).show();
+                        displayOnlinePlaylist();
+
+                    } else if (response.code() == 500) {
+                        Toast.makeText(getActivity(), "Some Error Occured ", Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 400) {
+                        Log.d("Error code : ", "" + response.code());
+                    } else {
+                        Log.d("Error code :", "" + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    t.printStackTrace();
+                    Log.e("here", "Unable to submit post to API.");
+                    Toast.makeText(getActivity(), "Failed ", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
 

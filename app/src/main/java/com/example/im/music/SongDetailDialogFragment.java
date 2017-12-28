@@ -42,12 +42,12 @@ public class SongDetailDialogFragment extends DialogFragment implements View.OnC
         View rootView = inflater.inflate(R.layout.songdetail_dialog, container, false);
         name1 = (TextView) rootView.findViewById(R.id.name1);
         image = (ImageView) rootView.findViewById(R.id.image1);
-        String songname=MainActivity.getSongDetailName();
-        List<SongDetails> songDetailses= SQLite.select().
-        from(SongDetails.class).where(SongDetails_Table.name.like(songname)).
-        queryList();
+        String songname = MainActivity.getSongDetailName();
+        List<SongDetails> songDetailses = SQLite.select().
+                from(SongDetails.class).where(SongDetails_Table.name.like(songname)).
+                queryList();
 //        int size=songDetailses.size();
-        SongDetails song=songDetailses.get(0);
+        SongDetails song = songDetailses.get(0);
         back = (Button) rootView.findViewById(R.id.back);
         back.setOnClickListener(this); //setting OnClickListener on Back Button.
 
@@ -100,7 +100,7 @@ public class SongDetailDialogFragment extends DialogFragment implements View.OnC
         //Displays embedded Byte image into Image View.
         albumart = song.getAlbumArt();
         int width = 120, height = 120;
-        if (albumart != "" && albumart !=null) {
+        if (albumart != "" && albumart != null) {
             byte[] imag = Base64.decode(albumart, Base64.DEFAULT);
             try {
                 Bitmap bmp = BitmapFactory.decodeByteArray(imag, 0, imag.length);

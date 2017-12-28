@@ -16,17 +16,27 @@ import retrofit2.http.POST;
  */
 
 public interface ApiInterface {
-    String BASE_URL = "http://192.168.16.236:3000/";
+    String BASE_URL = "http://192.168.16.90:3000/";
+
     @Headers("Content-Type: application/json")
-    @POST("add")   //to fetch data from url
-     Call<JsonObject> addToPlaylist(@Body Songinfo body);
+    @POST("add")
+        //to fetch data from url
+    Call<JsonObject> addToPlaylist(@Body Songinfo body);
 
     @Headers("Content-Type: application/json")
     @POST("delete")
     Call<JsonObject> delete(@Body Songinfo body);
 
-    @GET("songs")   //to fetch data from url
+    @GET("songs")
+        //to fetch data from url
     Call<List<Songinfo>> getDetails();
+
+    @POST("register")   //to fetch data from url
+    Call<JsonObject> register(@Body Registrationinfo body);
+
+    @Headers("Content-Type: application/json")
+    @POST("login")
+    Call<JsonObject> login(@Body Registrationinfo body);
 
 }
 

@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment"
     android:background="#ffff"
-    tools:context="OnlinePLaylistFragment"
-    >
-<!--<TextView-->
+    tools:context="OnlinePLaylistFragment">
+    <!--<TextView-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:textColor="#ffff"-->
     <!--android:textSize="30dp"-->
     <!--android:gravity="center"-->
     <!--android:text="Online PLaylist : Songs saved on the server.. "/>-->
-<ListView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/onlinePlaylist">
-</ListView>
+    <ListView
+        android:id="@+id/onlinePlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 </FrameLayout>

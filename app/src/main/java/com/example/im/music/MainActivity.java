@@ -77,10 +77,9 @@ public class MainActivity extends AppCompatActivity
     ArrayList<HashMap<String, String>> songList;
     int Activated = 1;
     Bundle bundle = new Bundle();
-    FragmentManager manager = getFragmentManager();
     SongDetailDialogFragment dialog = new SongDetailDialogFragment();
     int id = 0;
-    //    FragmentManager manager = getFragmentManager();    //Initializing Fragment Manager.
+    FragmentManager manager = getFragmentManager();    //Initializing Fragment Manager.
     OnlinePLaylistFragment Fragment = new OnlinePLaylistFragment();       //Initializing RideFragment.
 
     @Override
@@ -188,16 +187,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else
-            if (Fragment != null) {
+        } else if (Fragment != null) {
             getSupportActionBar().setTitle("Home");
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.remove(Fragment);
             transaction.commit();
-        }
-
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -397,8 +392,14 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_playList: {
                 // Handle the PLayList
-
-
+                if (Fragment != null) {
+                    getSupportActionBar().setTitle("Home");
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    transaction.remove(Fragment);
+                    transaction.commit();
+//                    break;
+                }
+                getSupportActionBar().setTitle("Playlist");
                 final ArrayList<String> songs = new ArrayList<>();
                 final ArrayList<String> songPath = new ArrayList<>();
                 final ArrayList<String> songArt = new ArrayList<>();
@@ -550,9 +551,17 @@ public class MainActivity extends AppCompatActivity
             }
 
             case R.id.onlinePlaylist: {
+                getSupportActionBar().setTitle("Online Playlist");
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.mainxml, Fragment).commit();
                 transaction.show(Fragment);
+                break;
+            }
+            case R.id.logOut :{
+                stopService(new Intent(MainActivity.this, MyService.class));
+                Intent login = new Intent(this,LoginActivity.class);
+                startActivity(login);
+                finish();
                 break;
             }
         }
@@ -709,7 +718,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Options: ");
+        menu.setHeaderTitle(getSongDetailName());
         menu.add(0, v.getId(), 0, "Add to Playlist");//groupId, itemId, order, title
         menu.add(0, v.getId(), 0, "Details");
         menu.add(0, v.getId(), 0, "Cancel");
@@ -811,10 +820,11 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (item.getTitle() == "Details") {
+
             Toast.makeText(getApplicationContext(), "Song Details..", Toast.LENGTH_LONG).show();
-
-
             dialog.show(manager, "YourDialog");
+
+
         } else if (item.getTitle() == "Cancel") {
 
         } else {

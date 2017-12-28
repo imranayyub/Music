@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import static com.example.im.music.MyService.isSearch;
 import static com.example.im.music.R.layout.big_notification;
 
 /**
@@ -30,8 +31,7 @@ public class HandleNotificationIntent extends BroadcastReceiver {
             if (mediaPlayer.isPlaying()) {
 //                pauseMusic();
                 MyService.pause();
-            }
-           else{
+            } else {
                 MyService.play();
             }
             setplayorpause(1);
@@ -45,7 +45,7 @@ public class HandleNotificationIntent extends BroadcastReceiver {
             Intent nextintent = new Intent(context, MyService.class);
             Bundle bundle = new Bundle();
             bundle.putInt("position", position);
-            bundle.putInt("search", 0);
+            bundle.putInt("search", isSearch);
             nextintent.putExtras(bundle);
             context.startService(nextintent);
 
@@ -59,7 +59,7 @@ public class HandleNotificationIntent extends BroadcastReceiver {
             Intent nextintent = new Intent(context, MyService.class);
             Bundle bundle = new Bundle();
             bundle.putInt("position", position);
-            bundle.putInt("search", 0);
+            bundle.putInt("search", isSearch);
             nextintent.putExtras(bundle);
             context.startService(nextintent);
 

@@ -26,24 +26,22 @@ public class CustomAdapterforList extends ArrayAdapter<String> {
     private final ArrayList<String> imageId;
 
     public CustomAdapterforList(Activity context, ArrayList<String> imageId, ArrayList<String> song) {
-        super(context, R.layout.listview,song);
+        super(context, R.layout.listview, song);
         this.context = context;
         this.imageId = imageId;
-        this.song=song;
+        this.song = song;
 
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.listview, null, true);
+        View rowView = inflater.inflate(R.layout.listview, null, true);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
 
-        if(imageId.get(position) ==null)
-        {
+        if (imageId.get(position) == null) {
             imageView.setImageResource(R.drawable.music1);
-        }
-        else
-        {
+        } else {
             int width = 120, height = 120;
             byte[] imag = Base64.decode(String.valueOf(imageId.get(position)), Base64.DEFAULT);
             try {
@@ -59,7 +57,7 @@ public class CustomAdapterforList extends ArrayAdapter<String> {
 //            imageView.setImageBitmap(imageId.get(position));
             //imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageId,0,imageId.length));
         }
-        TextView textView=(TextView)rowView.findViewById(R.id.name);
+        TextView textView = (TextView) rowView.findViewById(R.id.name);
         textView.setText(song.get(position));
         return rowView;
     }

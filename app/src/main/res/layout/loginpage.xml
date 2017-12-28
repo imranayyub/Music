@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000">
+
+    <EditText
+        android:id="@+id/userEmail"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColorHint="#c8e1ef"
+        android:textColor="#ffff"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_margin="16dp"
+        android:textColorHint="#c8e1ef"
+        android:textColor="#ffff"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:textColor="@color/colorPrimaryDark"
+
+        android:id="@+id/login"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Register"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/register"/>
+</LinearLayout>
+
+</LinearLayout>

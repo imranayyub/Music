@@ -33,7 +33,7 @@ import static com.example.im.music.R.layout.big_notification;
 
 public class MyService extends Service {
     public static MediaPlayer player;
-   static int position, isSearch = 0;
+   static int position, isSearch;
     public static final String NOTIFY_PLAY = "com.example.im.music.play";
     public static final String NOTIFY_PREVIOUS = "com.example.im.music.previous";
     public static final String NOTIFY_DELETE = "com.example.im.music.delete";

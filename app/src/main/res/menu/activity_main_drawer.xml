@@ -16,7 +16,10 @@
             android:id="@+id/onlinePlaylist"
             android:title="Online Playlist"
             android:icon="@android:drawable/stat_sys_headset"/>
-
+<item
+    android:id="@+id/logOut"
+    android:title="Log Out"
+    android:icon="@drawable/logout1"/>
     </group>
 
 
