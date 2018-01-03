@@ -1,4 +1,4 @@
-package com.example.im.music;
+package com.example.im.music.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

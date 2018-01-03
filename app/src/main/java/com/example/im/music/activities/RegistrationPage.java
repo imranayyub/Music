@@ -1,4 +1,4 @@
-package com.example.im.music;
+package com.example.im.music.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.im.music.R;
+import com.example.im.music.models.Registrationinfo;
+import com.example.im.music.interfaces.ApiInterface;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
@@ -91,7 +94,7 @@ public class RegistrationPage extends AppCompatActivity implements View.OnClickL
                                Toast.makeText(getApplicationContext(),response.body().toString(), Toast.LENGTH_SHORT).show();
                         Log.i("here:", "post submitted to API." + response.body().toString());
                         Toast.makeText(getApplicationContext(), "Registeration Successful.. ", Toast.LENGTH_SHORT).show();
-                        Intent main= new Intent(RegistrationPage.this,MainActivity.class);
+                        Intent main= new Intent(RegistrationPage.this,HomeActivity.class);
                         startActivity(main);
                         finish();
 

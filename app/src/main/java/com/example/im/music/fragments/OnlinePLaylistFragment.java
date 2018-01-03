@@ -1,7 +1,6 @@
-package com.example.im.music;
+package com.example.im.music.fragments;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.im.music.R;
+import com.example.im.music.activities.HomeActivity;
+import com.example.im.music.adapters.CustomAdapterforList;
+import com.example.im.music.interfaces.ApiInterface;
+import com.example.im.music.models.Songinfo;
+import com.example.im.music.services.MyService;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -41,6 +46,7 @@ public class OnlinePLaylistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.onlineplaylist, container, false);
     }
 
@@ -120,7 +126,16 @@ public class OnlinePLaylistFragment extends Fragment {
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                             name = (String) adapterView.getItemAtPosition(position);
 //                            Toast.makeText(getActivity(), "Playing : " + name, Toast.LENGTH_SHORT).show();
+                            String name = (String) adapterView.getItemAtPosition(position);
+                            //Intent to Start Service(Service to play Music in Background).
 
+                            Bundle bundle = new Bundle();
+                            Intent intent = new Intent(getActivity(), MyService.class);
+                            bundle.putInt("position", position);
+                            bundle.putString("songname", name);
+                            bundle.putInt("search", 1);
+                            intent.putExtras(bundle);
+                            getActivity().startService(intent);
                         }
                     });
 

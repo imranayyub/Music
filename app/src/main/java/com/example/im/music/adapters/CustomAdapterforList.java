@@ -1,4 +1,4 @@
-package com.example.im.music;
+package com.example.im.music.adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.im.music.R;
 
 import java.util.ArrayList;
 

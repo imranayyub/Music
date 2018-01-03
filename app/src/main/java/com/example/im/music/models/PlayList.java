@@ -1,39 +1,79 @@
-package com.example.im.music;
+package com.example.im.music.models;
 
+import com.example.im.music.database.Appdatabase;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
- * Created by Im on 06-12-2017.
+ * Created by Im on 14-12-2017.
  */
-
-//Model Class to Get and Set data for DetailDialogFragment.
 @Table(database = Appdatabase.class)
-public class SongDetails extends BaseModel {
+public class PlayList extends BaseModel {
 
     @PrimaryKey // at least one primary key required
             int id;
 
     @Column
-    String name;
+    @SerializedName("song_name")
+    @Expose
+    private String name;
+
     @Column
-    String artist;
+    @SerializedName("artist_name")
+    @Expose
+    private String artist;
+
     @Column
-    String duration;
+    @SerializedName("duration")
+    @Expose
+    private String duration;
+
     @Column
-    String album;
+    @SerializedName("bitrate")
+    @Expose
+    private String bitrate;
+
     @Column
-    String genre;
+    @SerializedName("song_title")
+    @Expose
+    private String title;
+
     @Column
-    String bitrate;
+    @SerializedName("path")
+    @Expose
+    private String path;
+
     @Column
-    String path;
+    @SerializedName("album_art")
+    @Expose
+    private String albumArt;
+
     @Column
-    String albumArt;
+    @SerializedName("album")
+    @Expose
+    private String album;
+
     @Column
-    String title;
+    @SerializedName("genre")
+    @Expose
+    private String genre;
+
+//    public PlayList(int id, String name, String artist, String duration, String bitrate, String title, String path, String albumArt, String album, String genre) {
+//        this.id = id;
+//        this.name = name;
+//        this.artist = artist;
+//        this.duration = duration;
+//        this.bitrate = bitrate;
+//        this.title = title;
+//        this.path = path;
+//        this.albumArt = albumArt;
+//        this.album = album;
+//        this.genre = genre;
+//    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -115,4 +155,3 @@ public class SongDetails extends BaseModel {
         this.id = id;
     }
 }
-

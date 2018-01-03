@@ -1,6 +1,8 @@
-package com.example.im.music;
+package com.example.im.music.interfaces;
 
 
+import com.example.im.music.models.Songinfo;
+import com.example.im.music.models.Registrationinfo;
 import com.google.gson.JsonObject;
 
 import java.util.List;

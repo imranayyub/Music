@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000">
+    android:background="@drawable/black">
 
     <EditText
         android:id="@+id/userEmail"
@@ -34,19 +34,21 @@
     android:orientation="horizontal">
     <Button
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:text="Login"
         android:layout_margin="16dp"
         android:layout_weight="1"
+        android:background="@drawable/mybutton"
         android:textColor="@color/colorPrimaryDark"
 
         android:id="@+id/login"/>
     <Button
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_margin="16dp"
         android:text="Register"
+        android:background="@drawable/mybutton"
         android:textColor="@color/colorPrimaryDark"
         android:id="@+id/register"/>
 </LinearLayout>

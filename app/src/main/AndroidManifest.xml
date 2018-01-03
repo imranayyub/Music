@@ -8,27 +8,27 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:name=".DbflowApplication"
+        android:name=".database.DbflowApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationPage">
+        <activity android:name=".activities.RegistrationPage">
 
         </activity>
-        <service android:name=".MyService" />
-        <receiver android:name=".HandleNotificationIntent">
+        <service android:name=".services.MyService" />
+        <receiver android:name=".notification.HandleNotificationIntent">
         <intent-filter>
             <action android:name="com.example.im.music.previous" />
             <action android:name="com.example.im.music.delete" />

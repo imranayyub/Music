@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@drawable/black"
     android:orientation="vertical"
-    tools:context="com.example.anshul.fbRegistration.RegistrationPage">
+    tools:context="com.example.im.music.activities.RegistrationPage">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -131,10 +131,11 @@
     <Button
         android:id="@+id/registerButton"
         android:layout_width="60pt"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="Register"
+        android:background="@drawable/mybutton"
         android:textColor="@color/colorPrimaryDark" />
 </RelativeLayout>

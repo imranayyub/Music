@@ -1,9 +1,8 @@
-package com.example.im.music;
+package com.example.im.music.fragments;
 
 import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,13 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.im.music.R;
+import com.example.im.music.models.SongDetails;
+import com.example.im.music.activities.HomeActivity;
+import com.example.im.music.models.SongDetails_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class SongDetailDialogFragment extends DialogFragment implements View.OnC
         View rootView = inflater.inflate(R.layout.songdetail_dialog, container, false);
         name1 = (TextView) rootView.findViewById(R.id.name1);
         image = (ImageView) rootView.findViewById(R.id.image1);
-        String songname = MainActivity.getSongDetailName();
+        String songname = HomeActivity.getSongDetailName();
         List<SongDetails> songDetailses = SQLite.select().
                 from(SongDetails.class).where(SongDetails_Table.name.like(songname)).
                 queryList();

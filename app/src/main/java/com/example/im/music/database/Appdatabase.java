@@ -1,4 +1,4 @@
-package com.example.im.music;
+package com.example.im.music.database;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 

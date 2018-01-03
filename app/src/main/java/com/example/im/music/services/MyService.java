@@ -1,4 +1,4 @@
-package com.example.im.music;
+package com.example.im.music.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,20 +11,21 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.SyncStateContract;
-import android.support.transition.Visibility;
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
+import com.example.im.music.R;
+import com.example.im.music.activities.HomeActivity;
+import com.example.im.music.models.PlayList;
+import com.example.im.music.models.SongDetails;
+import com.example.im.music.models.SongDetails_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static android.drm.DrmStore.Action.PLAY;
 import static com.example.im.music.R.layout.big_notification;
 
 /**
@@ -33,12 +34,14 @@ import static com.example.im.music.R.layout.big_notification;
 
 public class MyService extends Service {
     public static MediaPlayer player;
-   static int position, isSearch;
+    static int position;
+    public static int isSearch;
     public static final String NOTIFY_PLAY = "com.example.im.music.play";
     public static final String NOTIFY_PREVIOUS = "com.example.im.music.previous";
     public static final String NOTIFY_DELETE = "com.example.im.music.delete";
     public static final String NOTIFY_PAUSE = "com.example.im.music.pause";
     public static final String NOTIFY_NEXT = "com.example.im.music.next";
+    String songName;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -59,44 +62,53 @@ public class MyService extends Service {
             Bundle bundle = intent.getExtras();
             isSearch = bundle.getInt("search");
             if (isSearch == 1) {
-                String songName = bundle.getString("songname");
+                if (bundle.getString("songname") != null) {
+                    songName = bundle.getString("songname");
+                    setSongname(songName);
+                } else {
+                    songName = getSongname();
+                }
+
                 songDetailses = SQLite.select().
                         from(SongDetails.class).
                         where(SongDetails_Table.name.like("%" + songName + "%")).
                         queryList();
-                songDetailses.size();
-//                position=0;
-                position = bundle.getInt("position");
-                if (position >= songDetailses.size())  //checks if it's last Song in the list.
-                    position = 0;
-                if(position==-1)
-                    position=songDetailses.size()-1;
-                setCurrentPosition(position);
-                SongDetails song = songDetailses.get(position);
-                Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
-                player = MediaPlayer.create(this, sing);
-                player.start();  //playing Song Using MediaPlayer.
-                createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
-                //checks if the Songs is over(Here we play next Song if previous is over).
-                player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer play) {
-                        position++;
+                if(songDetailses.size()!=0) {
+                    position = bundle.getInt("position");
+                    if (position >= songDetailses.size())  //checks if it's last Song in the list.
+                        position = 0;
+                    if (position == -1)
+                        position = songDetailses.size() - 1;
+                    setCurrentPosition(position);
+                    SongDetails song = songDetailses.get(position);
+                    Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
+                    player = MediaPlayer.create(this, sing);
+                    player.start();  //playing Song Using MediaPlayer.
+                    createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
+                    //checks if the Songs is over(Here we play next Song if previous is over).
+                    player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer play) {
+                            position++;
 
-                        if (position >= songDetailses.size())  //checks if it's last Song in the list.
-                            position = 0;
-                        if (player != null)
-                            player.stop();
-                        setCurrentPosition(position);
-                        SongDetails song = songDetailses.get(position);
-                        Uri sing = Uri.parse((String) song.getPath());
-                        player = MediaPlayer.create(MyService.this, sing);
-                        createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
-                        player.setOnCompletionListener(this);
-                        player.start();
-                    }
-                });
-
+                            if (position >= songDetailses.size())  //checks if it's last Song in the list.
+                                position = 0;
+                            if (player != null)
+                                player.stop();
+                            setCurrentPosition(position);
+                            SongDetails song = songDetailses.get(position);
+                            Uri sing = Uri.parse((String) song.getPath());
+                            player = MediaPlayer.create(MyService.this, sing);
+                            createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
+                            player.setOnCompletionListener(this);
+                            player.start();
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Can't find song in phone..",Toast.LENGTH_SHORT).show();
+                }
 
             } else if (isSearch == 2) {
 
@@ -106,8 +118,8 @@ public class MyService extends Service {
                 position = bundle.getInt("position");
                 if (position >= playLists.size())  //checks if it's last Song in the list.
                     position = 0;
-                if(position==-1)
-                    position=playLists.size()-1;
+                if (position == -1)
+                    position = playLists.size() - 1;
                 setCurrentPosition(position);
                 PlayList song = playLists.get(position);
                 Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
@@ -140,8 +152,8 @@ public class MyService extends Service {
                 position = bundle.getInt("position");
                 if (position >= songDetailses.size())  //checks if it's last Song in the list.
                     position = 0;
-                if(position==-1)
-                    position=songDetailses.size()-1;
+                if (position == -1)
+                    position = songDetailses.size() - 1;
                 setCurrentPosition(position);
                 SongDetails song = songDetailses.get(position);
                 Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
@@ -215,7 +227,7 @@ public class MyService extends Service {
 
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent notifyIntent = new Intent(context, MainActivity.class);
+        Intent notifyIntent = new Intent(context, HomeActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationCompat.setContentIntent(pendingIntent);
@@ -259,7 +271,8 @@ public class MyService extends Service {
 
 
     }
-//    int isPause=0;
+
+    //    int isPause=0;
     public void setListeners(RemoteViews view, Context context) {
 
 //        Intent notificationIntent = new Intent(this, HandleNotificationIntent.class);
@@ -295,4 +308,12 @@ public class MyService extends Service {
         return position;
     }
 
+    public void setSongname(String songname) {
+        this.songName = songname;
+
+    }
+
+    String getSongname() {
+        return songName;
+    }
 }

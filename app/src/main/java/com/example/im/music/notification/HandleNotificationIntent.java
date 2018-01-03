@@ -1,16 +1,14 @@
-package com.example.im.music;
+package com.example.im.music.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.RemoteViews;
-import android.widget.Toast;
 
-import static com.example.im.music.MyService.isSearch;
-import static com.example.im.music.R.layout.big_notification;
+import com.example.im.music.services.MyService;
+
+import static com.example.im.music.services.MyService.isSearch;
 
 /**
  * Created by Im on 15-12-2017.
