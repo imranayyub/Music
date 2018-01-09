@@ -36,6 +36,7 @@
             android:layout_marginRight="16pt"
             android:layout_marginTop="6pt"
             android:hint="UserName"
+            android:textStyle="italic"
             android:singleLine="true"
             android:textColor="#ffff"
             android:textColorHint="#c8e1ef" />
@@ -50,6 +51,7 @@
             android:layout_marginRight="16pt"
             android:layout_marginTop="8pt"
             android:hint="Email"
+            android:textStyle="italic"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="#ffff"
@@ -65,6 +67,7 @@
             android:layout_marginTop="10pt"
             android:hint="Password"
             android:maxLines="1"
+            android:textStyle="italic"
             android:singleLine="true"
             android:textColor="#ffff"
             android:textColorHint="#c8e1ef" />
@@ -80,6 +83,7 @@
             android:hint="Phone number"
             android:inputType="number"
             android:maxLines="1"
+            android:textStyle="italic"
             android:singleLine="true"
             android:textColor="#ffff"
             android:textColorHint="#c8e1ef" />

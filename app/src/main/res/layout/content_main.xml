@@ -2,57 +2,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainxml"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffff"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.im.music.activities.HomeActivity"
-    tools:showIn="@layout/app_bar_main"
-    android:orientation="vertical"
-    android:background="#ffff"
-    android:id="@+id/mainxml">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/list">
-    <ListView
-        android:layout_width="368dp"
-        android:layout_height="400dp"
-        android:id="@+id/playList"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-    </ListView>
-</LinearLayout>
+    tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:layout_below="@id/list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/playList"
+            android:layout_width="368dp"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"></ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shadow1"
         android:elevation="70dp"
         android:orientation="horizontal">
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="60dp"
-        android:layout_weight="1"
-        android:elevation="70dp"
-        android:id="@+id/play"
-        style="#91000000"
-        android:background="@drawable/mybutton"
-        android:text="Play"/>
-<Button
-    android:layout_width="0dp"
-    android:layout_weight="1"
-    android:layout_height="35dp"
-    android:id="@+id/stop"
-    android:text="Stop"
-    android:layout_marginTop="30dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="60dp"
-    android:gravity="center"
-    android:elevation="70dp"
-    style="#91000000"
-    android:background="@drawable/mybutton"
-       />
+
+        <ImageView
+            android:id="@+id/barImage"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/album_art" />
+
+        <TextView
+            android:id="@+id/barSong"
+            android:layout_width="0dp"
+            android:textColor="#000"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="3"
+            android:text="songname" />
+
+        <Button
+            android:id="@+id/stop"
+            style="#91000000"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight=".7"
+            android:background="@drawable/stopss"
+            android:elevation="70dp"
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/play"
+            style="#91000000"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight=".7"
+            android:background="@drawable/ic_action_play"
+            android:elevation="70dp"
+             />
+        <!--android:text="Play"-->
+
+        <!--android:text="Stop"-->
     </LinearLayout>
 </RelativeLayout>

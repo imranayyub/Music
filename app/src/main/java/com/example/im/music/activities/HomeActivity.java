@@ -10,6 +10,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -32,7 +36,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.im.music.interfaces.ApiInterface;
@@ -65,16 +71,18 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     //Defining Variables.
-    Button play, stop;
+    public static Button play, stop;
     ListView playList;
     ProgressDialog progressDialog;
     ArrayList<HashMap<String, String>> songList;
-    int Activated = 1;
+    public static int Activated = 1;
     Bundle bundle = new Bundle();
     SongDetailDialogFragment dialog = new SongDetailDialogFragment();
     int id = 0;
     FragmentManager manager = getFragmentManager();    //Initializing Fragment Manager.
     OnlinePLaylistFragment Fragment = new OnlinePLaylistFragment();       //Initializing RideFragment.
+    public static ImageView barImage;
+    public static TextView barSong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +90,16 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        barImage = (ImageView) findViewById(R.id.barImage);
+        barSong = (TextView) findViewById(R.id.barSong);
+
+        play = (Button) findViewById(R.id.play);
+        play.setOnClickListener(this);
+        stop = (Button) findViewById(R.id.stop);
+        stop.setOnClickListener(this);
+
+        play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+        stop.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
         //displays song in if already stored in database other load them from system.
         setSongs();
 
@@ -189,7 +207,10 @@ public class HomeActivity extends AppCompatActivity
                                 String name = (String) adapterView.getItemAtPosition(position);
                                 Toast.makeText(getApplicationContext(), "Playing : " + name, Toast.LENGTH_SHORT).show();
 
-                                play.setText("Pause");
+
+                                play.setBackgroundResource(R.drawable.ic_action_pause);
+                                play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+
                                 Activated = 1;
 
                                 //Intent to Start Service(Service to play Music in Background).
@@ -302,7 +323,9 @@ public class HomeActivity extends AppCompatActivity
                         String name = (String) adapterView.getItemAtPosition(position);
                         Toast.makeText(getApplicationContext(), "Playing : " + name, Toast.LENGTH_SHORT).show();
 
-                        play.setText("Pause");
+                        play.setBackgroundResource(R.drawable.ic_action_pause);
+                        play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+
                         Activated = 1;
 
                         //Intent to Start Service(Service to play Music in Background).
@@ -349,7 +372,7 @@ public class HomeActivity extends AppCompatActivity
             }
             case R.id.logOut: {
 
-               logoutDialog();
+                logoutDialog();
                 break;
             }
         }
@@ -427,7 +450,9 @@ public class HomeActivity extends AppCompatActivity
                     String name = (String) adapterView.getItemAtPosition(position);
                     Toast.makeText(getApplicationContext(), "Playing : " + name, Toast.LENGTH_SHORT).show();
 
-                    play.setText("Pause");
+                    play.setBackgroundResource(R.drawable.ic_action_pause);
+                    play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+
                     Activated = 1;
 
                     //Intent to Start Service(Service to play Music in Background).
@@ -574,13 +599,14 @@ public class HomeActivity extends AppCompatActivity
                     //        apiService.savePost(userName, password, phone).enqueue(new Callback<playList>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        if (response.isSuccessful()) {
-//                            showResponse(
-                            Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_SHORT).show();
-                            Log.i("here:", "post submitted to API." + response.body().toString());
-                            Toast.makeText(getApplicationContext(), "Added to Playlist Successfully.. ", Toast.LENGTH_SHORT).show();
-
-                        } else if (response.code() == 200) {
+//                        if (response.isSuccessful()) {
+////                            showResponse(
+//                            Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_SHORT).show();
+//                            Log.i("here:", "post submitted to API." + response.body().toString());
+//                            Toast.makeText(getApplicationContext(), "Added to Playlist Successfully.. ", Toast.LENGTH_SHORT).show();
+//
+//                        } else
+                        if (response.code() == 200) {
                             Toast.makeText(getApplicationContext(), "Added to Playlist Successfully..", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 500) {
                             Toast.makeText(getApplicationContext(), "Already Added", Toast.LENGTH_SHORT).show();
@@ -625,7 +651,8 @@ public class HomeActivity extends AppCompatActivity
         switch (id) {
             case R.id.stop: {
                 stopService(new Intent(HomeActivity.this, MyService.class));
-                play.setText("play");
+                play.setBackgroundResource(R.drawable.ic_action_play);
+                play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
                 Activated = 1;
                 break;
             }
@@ -635,12 +662,14 @@ public class HomeActivity extends AppCompatActivity
 //                    mp.pause();
                     MyService.pause();
                     Activated = 0;
-                    play.setText("Play");
+                    play.setBackgroundResource(R.drawable.ic_action_play);
+                    play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
                 } else {
 //                    mp.start();
                     MyService.play();
-                    play.setText("Pause");
+                    play.setBackgroundResource(R.drawable.ic_action_pause);
                     Activated = 1;
+                    play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
                 }
             }
 
@@ -679,10 +708,6 @@ public class HomeActivity extends AppCompatActivity
 
     public void setSongs() {
         playList = (ListView) findViewById(R.id.playList);
-        play = (Button) findViewById(R.id.play);
-        play.setOnClickListener(this);
-        stop = (Button) findViewById(R.id.stop);
-        stop.setOnClickListener(this);
 
         final ArrayList<String> songs = new ArrayList<>();
         final ArrayList<String> songPath = new ArrayList<>();
@@ -720,9 +745,28 @@ public class HomeActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     String name = (String) adapterView.getItemAtPosition(position);
                     Toast.makeText(getApplicationContext(), "Playing : " + name, Toast.LENGTH_SHORT).show();
-
-                    play.setText("Pause");
+                    barSong.setText(name);
+                    play.setBackgroundResource(R.drawable.ic_action_pause);
+                    play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
                     Activated = 1;
+
+
+                    if (songArt.get(position) == null || songArt.get(position).equals("")) {
+                        barImage.setImageResource(R.drawable.album_art);
+                    } else {
+                        int width = 120, height = 120;
+                        byte[] imag = Base64.decode(String.valueOf(songArt.get(position)), Base64.DEFAULT);
+                        try {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(imag, 0, imag.length);
+//
+                            barImage.setImageBitmap(Bitmap.createScaledBitmap(bmp, width,
+                                    height, false));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("Exception ", e.toString());
+                        }
+                    }
+
 
                     //Intent to Start Service(Service to play Music in Background).
                     Intent intent = new Intent(HomeActivity.this, MyService.class);
@@ -748,8 +792,8 @@ public class HomeActivity extends AppCompatActivity
         }
 
     }
-    void logoutDialog()
-    {
+
+    void logoutDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
 
         // Setting Dialog Title
@@ -759,7 +803,7 @@ public class HomeActivity extends AppCompatActivity
         alertDialog.setMessage("Are you sure you want to Logout?");
 
         // Setting Icon to Dialog
-                alertDialog.setIcon(R.drawable.warning);
+        alertDialog.setIcon(R.drawable.warning);
 
         // Setting Positive "Yes" Button
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {

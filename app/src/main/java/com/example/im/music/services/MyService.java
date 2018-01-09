@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,10 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.List;
 
 import static com.example.im.music.R.layout.big_notification;
+import static com.example.im.music.activities.HomeActivity.Activated;
+import static com.example.im.music.activities.HomeActivity.barImage;
+import static com.example.im.music.activities.HomeActivity.barSong;
+import static com.example.im.music.activities.HomeActivity.play;
 
 /**
  * Created by Im on 04-12-2017.
@@ -73,7 +79,10 @@ public class MyService extends Service {
                         from(SongDetails.class).
                         where(SongDetails_Table.name.like("%" + songName + "%")).
                         queryList();
-                if(songDetailses.size()!=0) {
+                if (songDetailses.size() != 0) {
+                    play.setBackgroundResource(R.drawable.ic_action_pause);
+                    play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+                    Activated = 1;
                     position = bundle.getInt("position");
                     if (position >= songDetailses.size())  //checks if it's last Song in the list.
                         position = 0;
@@ -81,6 +90,9 @@ public class MyService extends Service {
                         position = songDetailses.size() - 1;
                     setCurrentPosition(position);
                     SongDetails song = songDetailses.get(position);
+                    //to set songName and Albumart on the currently playing bar in Musicplayer.
+                    setBarData(song.getName(), song.getAlbumArt());
+
                     Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
                     player = MediaPlayer.create(this, sing);
                     player.start();  //playing Song Using MediaPlayer.
@@ -97,6 +109,9 @@ public class MyService extends Service {
                                 player.stop();
                             setCurrentPosition(position);
                             SongDetails song = songDetailses.get(position);
+//to set songName and Albumart on the currently playing bar in Musicplayer.
+                            setBarData(song.getName(), song.getAlbumArt());
+
                             Uri sing = Uri.parse((String) song.getPath());
                             player = MediaPlayer.create(MyService.this, sing);
                             createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
@@ -104,10 +119,8 @@ public class MyService extends Service {
                             player.start();
                         }
                     });
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Can't find song in phone..",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Can't find song in phone..", Toast.LENGTH_SHORT).show();
                 }
 
             } else if (isSearch == 2) {
@@ -122,6 +135,9 @@ public class MyService extends Service {
                     position = playLists.size() - 1;
                 setCurrentPosition(position);
                 PlayList song = playLists.get(position);
+//to set songName and Albumart on the currently playing bar in Musicplayer.
+                setBarData(song.getName(), song.getAlbumArt());
+
                 Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
                 player = MediaPlayer.create(this, sing);
                 player.start();  //playing Song Using MediaPlayer.
@@ -139,6 +155,9 @@ public class MyService extends Service {
                         setCurrentPosition(position);
                         PlayList song = playLists.get(position);
                         Uri sing = Uri.parse((String) song.getPath());
+
+                        setBarData(song.getName(), song.getAlbumArt());
+
                         player = MediaPlayer.create(MyService.this, sing);
                         createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
                         player.setOnCompletionListener(this);
@@ -156,6 +175,9 @@ public class MyService extends Service {
                     position = songDetailses.size() - 1;
                 setCurrentPosition(position);
                 SongDetails song = songDetailses.get(position);
+//to set songName and Albumart on the currently playing bar in Musicplayer.
+                setBarData(song.getName(), song.getAlbumArt());
+
                 Uri sing = Uri.parse((String) song.getPath()); //Converting String path into Uri.
                 player = MediaPlayer.create(this, sing);
                 player.start();  //playing Song Using MediaPlayer.
@@ -173,6 +195,9 @@ public class MyService extends Service {
                         setCurrentPosition(position);
                         SongDetails song = songDetailses.get(position);
                         Uri sing = Uri.parse((String) song.getPath());
+
+                        setBarData(song.getName(), song.getAlbumArt());
+
                         player = MediaPlayer.create(MyService.this, sing);
                         createNotification(getApplicationContext(), (String) song.getName(), song.getAlbumArt());  //shows Notification each time new song is played.
                         player.setOnCompletionListener(this);
@@ -208,6 +233,10 @@ public class MyService extends Service {
     public static void pause() {
         if (player.isPlaying()) {
             player.pause();
+            Activated = 0;
+            play.setBackgroundResource(R.drawable.ic_action_play);
+            play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+
 
         }
     }
@@ -216,6 +245,10 @@ public class MyService extends Service {
     public static void play() {
         if (!player.isPlaying()) {
             player.start();
+            play.setBackgroundResource(R.drawable.ic_action_pause);
+            Activated = 1;
+            play.getBackground().setColorFilter(new LightingColorFilter(0x000000, Color.parseColor("#000000")));
+
         }
     }
 
@@ -235,7 +268,7 @@ public class MyService extends Service {
         notificationCompat.setAutoCancel(false);
         notificationCompat.setCustomBigContentView(expandedView);
         notificationCompat.setContentTitle("Music Player");
-        notificationCompat.setContentText("Control Audio");
+        notificationCompat.setContentText(name);
         notificationCompat.getBigContentView().setTextViewText(R.id.textSongName, name);
         notificationCompat.setOngoing(true);
         notificationCompat.setOnlyAlertOnce(true);
@@ -315,5 +348,24 @@ public class MyService extends Service {
 
     String getSongname() {
         return songName;
+    }
+
+    public void setBarData(String name, String image) {
+        barSong.setText(name);
+        if (image == null || image.equals("")) {
+            barImage.setImageResource(R.drawable.album_art);
+        } else {
+            int width = 120, height = 120;
+            byte[] imag = Base64.decode(String.valueOf(image), Base64.DEFAULT);
+            try {
+                Bitmap bmp = BitmapFactory.decodeByteArray(imag, 0, imag.length);
+//
+                barImage.setImageBitmap(Bitmap.createScaledBitmap(bmp, width,
+                        height, false));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("Exception ", e.toString());
+            }
+        }
     }
 }

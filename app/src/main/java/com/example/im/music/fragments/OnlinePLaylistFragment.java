@@ -34,6 +34,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.im.music.activities.HomeActivity.Activated;
+import static com.example.im.music.activities.HomeActivity.play;
+
 /**
  * Created by Im on 26-12-2017.
  */
@@ -128,6 +131,7 @@ public class OnlinePLaylistFragment extends Fragment {
 //                            Toast.makeText(getActivity(), "Playing : " + name, Toast.LENGTH_SHORT).show();
                             String name = (String) adapterView.getItemAtPosition(position);
                             //Intent to Start Service(Service to play Music in Background).
+
 
                             Bundle bundle = new Bundle();
                             Intent intent = new Intent(getActivity(), MyService.class);

@@ -90,8 +90,6 @@ public class RegistrationPage extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.isSuccessful()) {
-//                            showResponse(
-                               Toast.makeText(getApplicationContext(),response.body().toString(), Toast.LENGTH_SHORT).show();
                         Log.i("here:", "post submitted to API." + response.body().toString());
                         Toast.makeText(getApplicationContext(), "Registeration Successful.. ", Toast.LENGTH_SHORT).show();
                         Intent main= new Intent(RegistrationPage.this,HomeActivity.class);

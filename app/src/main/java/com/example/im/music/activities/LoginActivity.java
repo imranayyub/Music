@@ -153,8 +153,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.isSuccessful()) {
-//                            showResponse(
-                        Toast.makeText(getApplicationContext(),response.body().toString(), Toast.LENGTH_SHORT).show();
                         Log.i("here:", "post submitted to API." + response.body().toString());
                         Toast.makeText(getApplicationContext(), "Login Successful..!! ", Toast.LENGTH_SHORT).show();
                         Intent main= new Intent(LoginActivity.this,HomeActivity.class);
@@ -175,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     t.printStackTrace();
                     Log.e("here", "Unable to submit post to API.");
-                    Toast.makeText(getApplicationContext(), "Registeration failed ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Login failed ", Toast.LENGTH_SHORT).show();
 
                 }
 
